@@ -1,0 +1,125 @@
+{% extends 'engineer-navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    body {
+        background-image: url("{% static '/images/Airplane_Window_View.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+    }
+    
+    .card {
+        width: calc(90% - 20px); /* Adjusted width */
+        margin-bottom: 20px;
+        background-color: rgba(255, 255, 255, 0.36);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card-title {
+        font-size: 30px; /* Increased font size */
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+    }
+    
+    .card-text {
+        font-size: 20px; /* Increased font size */
+        font-style: italic; /* Added italic style */
+        color: #222; /* Slightly darker text color */
+    }
+    
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+    .title{
+        color: #333;
+    }
+    .finished-task-border {
+        border: 4px solid #28a758; /* Dark green border */
+    }
+</style>
+
+<body>
+   
+    <div class="container">
+        <br><br>
+        <h1 class="text-center mb-4 title">Engineer: {{engineer}}</h1>
+        <div class="card-container">
+
+            {% for task, manager in Tasks %}
+            <div class="card{% if task.progress == 100 %} finished-task-border {% endif %}">
+                <div class = "row justify-content-center">
+                    <h5 class = "card-title">{{task.title}}</h5>
+                </div>
+                <div class = "row justify-content-center">
+                    {% if task.progress == 100 %}
+                        <p class="card-text" style = "color: #209f; font-size: 24px;"><strong>Task Completed</strong></p>
+                    {% endif %}
+                </div>
+                &nbsp;
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Aircraft: {{task.aircraft}}</strong></p>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Description: {{ task.truncated_description }}</strong></p>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Priority: {{ task.priority }}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Deadline: {{ task.deadline }}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Created: {{ task.created_at }}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Manager: {{ manager }}</strong></p>
+                    </div>
+                </div>
+                
+                <div class = "row justify-content-center">
+                    <a href="{% url 'view-document' task.id %}" class = "btn btn-primary"> Docs </a>
+                </div>
+    
+                <div class="btn-container">
+                    <a href="{% url 'view-task-engineer' task.id %}" class="btn btn-primary">View Task</a>
+                    <a href="{% url 'update-task-progress' task.id %}" class="btn btn-secondary">Update Task Progress</a>
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

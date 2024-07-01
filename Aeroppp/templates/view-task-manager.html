@@ -1,0 +1,332 @@
+
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    body {
+        background-image: url('/static/images/Airplane_Window_View.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+    }
+    
+    .card {
+        width: calc(90% - 20px); /* Adjusted width */
+        margin-bottom: 20px;
+        background-color: rgba(255, 255, 255, 0.36);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card-title {
+        font-size: 20px; /* Increased font size */
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+    }
+    
+    .card-text {
+        font-size: 20px; /* Increased font size */
+        font-style: italic; /* Added italic style */
+        color: #222; /* Slightly darker text color */
+    }
+    
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+    .title{
+        color: #333;
+    }
+    .finished-task-border {
+      border: 4px solid #28a758; /* Dark green border */
+    }
+</style>
+
+<body>
+   
+    <div class="container">
+        <br><br>
+        <h1 class="text-center mb-4 title">Manager: {{Manager}}</h1>
+        <div class="card-container">
+          
+          <div class="card{% if task.progress == 100 %} finished-task-border {% endif %}">
+                
+                <div class="card-body d-flex flex-column align-items-center">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <h5 class="card-title"> Chat Room </h5>
+                    <a href = "{% url 'manager-chat' task.id %}"> Chat </a>
+                </div>
+                <div class = "row justify-content-center">
+                  {% if task.progress == 100 %}
+                      <p class="card-text" style = "color: #28a745; font-size: 24px;"><strong>Task Completed</strong></p>
+                  {% endif %}
+                </div>
+                &nbsp;
+                <div class = "row">
+                    <div class="col-md-7">
+                        <p class="card-text"><strong>Aircraft: {{task.aircraft}}</strong></p>
+                    </div>
+                </div>
+                &nbsp;
+                <div class = "row">
+                  <div class="col-md-12">
+                      <p class="card-text"><strong>Description: {{task.description}}</strong></p>
+                  </div>
+                </div>  
+                &nbsp;
+                <div class = "row">
+                  <div class="col-md-4">
+                      <p class="card-text"><strong>Priority: {{task.priority}}</strong></p>
+                  </div>
+                </div>
+                &nbsp;
+                <div class = "row">
+                  <div class="col-md-7">
+                      <p class="card-text"><strong>Deadline: {{task.deadline}}</strong></p>
+                  </div>
+                </div>
+                &nbsp;
+                <div class = "row">
+                  <div class="col-md-7">
+                      <p class="card-text"><strong>Created: {{task.created_at}}</strong></p>
+                  </div>
+                </div>
+                &nbsp;
+                <div class = "row">
+                  <div class="col-md-7">
+                      <p class="card-text"><strong>Progress: {{task.progress}}</strong></p>
+                  </div>
+                </div>
+                &nbsp;
+                <div class = "row">
+                  <div class = "col-md-4">
+                      <p class = "card-text"><strong>Engineers: </strong></p>
+                  </div>
+                </div>
+                <ol>
+                  {% for engineer in engineer_names %}
+                    <li class = "card-text"> {{engineer}} </li>
+                  {% endfor %}
+                </ol>
+                
+                <div class="btn-container">
+                    {% if task.id %}
+                        <a href="{% url 'manager-dashboard' %}" class="btn btn-primary">Manager Dashboard</a>
+                        <a href="{% url 'update-task-progress-manager' task.id %}" class="btn btn-secondary">Update Task Progress</a>
+                    {% endif %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
+
+
+
+
+
+<!--
+{% load static %}
+
+<!DOCTYPE html>
+
+    <html lang="en">
+
+        <head>
+
+
+            <meta charset="utf-8" />
+
+            <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+
+            <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+            <link rel="stylesheet" type="text/css" href="">
+
+
+        </head>
+        
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                font-size: 20px;
+            }
+            h1 {
+                text-align: center;
+            }
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 0.7em;
+            }
+            table, th, td {
+                border: 1px solid #dddddd;
+                padding: 6px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            td {
+                white-space: nowrap;
+            }
+        </style>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+            <a class="navbar-brand main-heading"> 
+                    
+              &nbsp; AeroMaintenance | Manager
+            
+            </a>
+        
+        
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+        
+            </button>
+        
+        
+              <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+                <ul class="navbar-nav ml-auto">
+    
+    
+                    &nbsp;     &nbsp;     &nbsp; 
+          
+          
+                    <li class="nav-link">
+                
+                      <a class="nav-link" type="button"  href="{% url 'create-task' %}">Create</a>
+          
+                    </li>
+
+                    &nbsp;     &nbsp;     &nbsp; 
+          
+          
+                    <li class="nav-link">
+                
+                      <a class="nav-link" type="button"  href="{% url 'manager-dashboard' %}">Dashboard</a>
+          
+                    </li>
+
+                    
+                
+                </ul>
+        
+                
+                <ul class="navbar-nav ms-auto">
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                  <li class="nav-item">
+        
+                    <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
+        
+                  </li>
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                </ul>
+              
+                
+              </div>
+        
+        
+        </nav>
+
+        
+
+        <body>
+            
+            <div class = "container bg-white shadow-md p-5 form-layout">
+                <h1> Task Details </h1>
+                <p> <strong> Title: </strong> {{task.title}} </p>
+                <p> <strong> Description: </strong> {{task.description}}</p>
+                <p> <strong> Aircraft: </strong> {{task.aircraft}} </p>
+                <p> <strong> Priority: </strong> {{task.priority}} </p>
+            
+                <h2> Engineers Assigned To Task </h2>
+            
+                <ul>
+                    {% for engineer_name in engineer_names %}
+                        <li> {{engineer_name}} </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+        </body>
+
+
+
+        <script src=""></script>
+
+
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+
+        crossorigin="anonymous">
+
+        </script>
+
+
+
+
+    </html>
+      -->

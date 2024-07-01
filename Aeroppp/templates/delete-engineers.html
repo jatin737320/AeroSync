@@ -1,0 +1,99 @@
+{% extends 'navbar.html' %}
+
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            background-image: url('/static/images/Airplane_Window_View.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .login-container {
+            margin-top: 100px; /* Adjust the margin-top as needed */
+        }
+        .login-box {
+        
+            max-width: 900px; /* Set maximum width for the login box */
+            margin: 0 auto; /* Center the login box horizontally */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.36); /* Transparent background */
+            border: 1px solid #000; /* Black border */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a slight elevation effect */
+        }
+
+        .form-control {
+            background-color: transparent !important;
+            border-color: #333;
+            background-color: rgba(255, 255, 255, 0.9); 
+            /* Semi-transparent white background */
+        }
+        .manager-checkbox input[type="checkbox"] {
+            width: 30px; /* Increase the size of the checkbox */
+            height: 20px;
+        }
+        
+        .manager-checkbox label {
+            font-size: 30px; /* Increase font size of engineer names */
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        /* Custom CSS */
+    </style>
+</head>
+<body>
+
+<div class="container login-container">
+    
+    
+    <div class="login-box">
+        <h2> Get Engineers: </h2>
+        {% if messages %}
+            <div class="alert alert-danger" role="alert" style="opacity: 0.6;>
+                <ul class="messages" style="list-style-type: none;">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div> 
+        {% endif %}
+        <form method = "POST">
+            {% csrf_token %}
+            {% for engineer in Engineers %}
+                <div class="form-check manager-checkbox">
+                    <input class="form-check-input" type="checkbox" id = "engineer_{{ engineer.user.id }}" name="engineers" value = "{{engineer.user.id}}">
+                    <label class="form-check-label" for="engineer_{{ engineer.user.id }}">
+                         &nbsp; &nbsp; {{ engineer.user.get_full_name }} - {{ engineer.specialization }} - Experience: {{ engineer.experience }} - Rating: {{ engineer.rating }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <!--<button type= "submit" class="btn btn-primary"> Remove Engineers</button>-->
+            <div class="btn-container">
+                <button type="submit" class="btn btn-primary btn-submit">Remove Engineers</button>
+                <a href="{% url 'manager-dashboard' %}" class="btn btn-secondary">Dashboard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

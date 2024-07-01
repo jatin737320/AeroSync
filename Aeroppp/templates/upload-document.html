@@ -1,0 +1,125 @@
+
+
+{% extends 'navbar.html' %}
+
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            background-image: url('/static/images/Airplane_Window_View.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .login-container {
+            margin-top: 100px; /* Adjust the margin-top as needed */
+        }
+        .login-box {
+        
+            max-width: 400px; /* Set maximum width for the login box */
+            margin: 0 auto; /* Center the login box horizontally */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.36); /* Transparent background */
+            border: 1px solid #000; /* Black border */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a slight elevation effect */
+        }
+
+        .form-control {
+            background-color: transparent !important;
+            border-color: #333;
+            background-color: rgba(255, 255, 255, 0.9); 
+            /* Semi-transparent white background */
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+    </style>
+    <script>
+        function removeFile() {
+            const fileInput = document.getElementById('id_file');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            fileInput.value = '';  // Clear the selected file
+            fileNameDisplay.textContent = 'No file selected';
+        }
+
+        function updateFileName() {
+            const fileInput = document.getElementById('id_file');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'No file selected';
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container login-container">
+    <div class="login-box">
+        <h2 class="text-center">DOCUMENTS</h2>
+        
+        <h3 class = "text-center"> {{Task.title}} </h3>
+
+        {% if documents %}
+        
+
+            <ul>
+                {% for document in documents %}
+                    <div class="col-md-15">
+                        <li><a href = "{{document.file.url }}">{{ document.file.name }}</a></li>
+                        <form method = "POST" action = "{% url 'delete-document' document.id %}" style = "display:inline;">
+                            {% csrf_token %}
+
+                            <button type = "submit"> Delete </button>
+                        </form>
+                        <label for = "document"> Uploaded: {{document.uploaded_by.get_full_name}}
+                        <label for = "document"> Time: {{document.uploaded_at}}
+                            
+                        <br>
+                    </div>
+                {% endfor %}
+
+            </ul>
+
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{Form.as_p}}
+            
+            <div>
+                <button type="button" onclick="removeFile()">Remove File</button>
+            </div>
+            <br>
+            
+            <!--<button type="submit">Upload</button>-->
+            <div class="btn-container">
+                <button type="submit" class="btn btn-primary btn-submit">Upload</button>
+                <a href="{% url 'manager-dashboard' %}" class="btn btn-secondary">Dashboard</a>
+            </div>
+        
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}
+

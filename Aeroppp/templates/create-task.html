@@ -1,0 +1,155 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a New Task</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    
+    body {
+        
+        background-image: url('/static/images/Airplane_Window_View.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        /*
+        background-image: url('static/Images/Airplane_Window_View.jpg'); /* Add your background image URL */
+        background-size: cover;
+        font-family: Arial, sans-serif; /* Change to desired font */
+        color: #222; /* Change font color */
+        */
+    }
+    
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Ensure it takes at least the full height of the viewport */
+        padding-top: 100px;
+    }
+    
+    .transparent-container {
+        background-color: transparent !important;
+        //background-color: rgba(255, 255, 255, 0.1); /* Slight white transparency for readability */
+        border: 2px solid #333; /* Set border color to dark */
+        border-radius: 10px; /* Add border radius for rounded edges */
+        padding: 20px; /* Add padding for spacing */
+        width: 100%; /* Make it responsive */
+        max-width: 900px; /* Maximum width */
+        box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+        margin: 20px; /* Add margin to prevent content from touching the viewport edges */
+    }
+    .transparent-form input,
+    .transparent-form select,
+    .transparent-form textarea {
+        background-color: transparent !important; /* Slight transparency for form elements */
+        border-color: #222 !important; /* Set border color to dark */
+        color: #ffffff; /* Set text color to white */
+        width: 100%; /* Make inputs take the full width */
+        padding: 10px; /* Add padding inside inputs */
+        margin-bottom: 10px; /* Space between form elements */
+        box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+        border-radius: 5px; /* Rounded edges for form elements */
+    }
+
+    .transparent-form input::placeholder,
+    .transparent-form select::placeholder,
+    .transparent-form textarea::placeholder {
+        color: #ccc; /* Set placeholder text color */
+    }
+
+    /*
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 120vh;
+        padding-top: 100px;
+        //background-color: transparent;
+    }
+    
+    
+    .transparent-container {
+        background-color: transparent !important;
+        border: 2px solid #333; /* Set border color to dark */
+        border-radius: 10px; /* Add border radius for rounded edges */
+        padding: 20px; /* Add padding for spacing */
+        height: 120vh;
+    }
+    
+    .transparent-form input,
+    .transparent-form select,
+    .transparent-form textarea {
+        background-color: transparent !important;
+        border-color: #222 !important; /* Set border color to dark */
+        color: #ffffff; /* Set text color to white */
+    }
+    
+    .transparent-form input::placeholder,
+    .transparent-form select::placeholder,
+    .transparent-form textarea::placeholder {
+        color: #ccc; /* Set placeholder text color */
+    }*/
+
+    .btn-secondary {
+        background-color: #111 !important; /* Set button background color to dark */
+        border-color: #222 !important; /* Set button border color to dark */
+        color: #ffffff !important; /* Set button text color to white */
+    }
+    .engineer-checkbox label {
+        font-size: 20px; /* Increase font size of engineer names */
+    }
+
+    .engineer-checkbox input[type="checkbox"] {
+        width: 20px; /* Increase the size of the checkbox */
+        height: 20px;
+    }
+
+    .form-container {
+        max-width: 400px;
+        width: 90%;
+    }
+   
+</style>
+<body>
+    <div class="center-container">
+        <div class="container bg-white shadow-md p-5 form-layout transparent-container">
+            <h3 class="text-center mb-4">Create a New Task</h3>
+            <form method="POST" autocomplete="off" class="transparent-form">
+                {% csrf_token %}
+                {{form.as_p}}
+                
+                {% for engineer in engineers_ %}
+                    <div class="form-check engineer-checkbox">
+                        <input class="form-check-input" type="checkbox" id = "engineer_{{ engineer.user.id }}" name="engineers" value = "{{engineer.user.id}}">
+                        <label class="form-check-label" for="engineer_{{ engineer.user.id }}">
+                            {{ engineer.user.get_full_name }} - {{ engineer.specialization }} - Experience: {{ engineer.experience }} - Rating: {{ engineer.rating }}
+                        </label>
+                    </div>
+                {% endfor %}
+                <hr>
+                <div class="form-group">
+                    <button class="btn btn-secondary btn-block" type="submit">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+
+</html>
+
+{% endblock %}
+code.jquery.com/jquery

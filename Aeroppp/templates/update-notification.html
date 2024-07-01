@@ -1,0 +1,105 @@
+{% extends 'engineer-navbar.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    body {
+        background-image: url('/static/images/Airplane_Window_View.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+    }
+    
+    .card {
+        width: calc(90% - 20px); /* Adjusted width */
+        margin-bottom: 20px;
+        background-color: rgba(255, 255, 255, 0.36);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card-title {
+        font-size: 30px; /* Increased font size */
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+    }
+    
+    .card-text {
+        font-size: 20px; /* Increased font size */
+        font-style: italic; /* Added italic style */
+        color: #222; /* Slightly darker text color */
+    }
+    
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+    .title{
+        color: #333;
+    }
+    .finished-task-border {
+        border: 4px solid #28a758; /* Dark green border */
+    }
+</style>
+
+<body>
+   
+    <div class="container">
+        <br><br>
+        <h1 class="text-center mb-4 title">Engineer: {{engineer}}</h1>
+        <div class="card-container">
+
+        {% if Notifications %}
+
+            {% for notification in Notifications %}
+
+                <div class="card">
+                <div class = "row justify-content-center">
+                    <h5 class = "card-title">{{notification.task.title}}</h5>
+                </div>
+                
+                &nbsp;
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <p class="card-text"><strong>Updated at: {{notification.created_at}}</strong></p>
+                            <p class="card-text"><strong>Deadline: {{notification.task.deadline}}</strong></p>
+                        </div>
+                    </div>
+                    
+            
+                    
+                </div>
+                </div>
+                
+            {% endfor %}    
+        </div>
+        {% endif %}
+        
+    </div>
+</body>
+</html>
+
+{% endblock %}

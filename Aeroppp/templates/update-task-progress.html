@@ -1,0 +1,138 @@
+{% extends 'engineer-navbar.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    body {
+        background-image: url('/static/images/Airplane_Window_View.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    
+    .card-container {
+        display: flex;
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+        height: 60vh; /* Full height of viewport */
+        padding-top: 10px;
+    }
+    
+    .card {
+        background-color: rgba(255, 255, 255, 0.36);
+        width: 50%;
+        max-width: 600px;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card input{
+        width: 60%; /* Make the input box wider */
+        padding: 10px; /* Add padding to the input box */
+        border: 1px solid #ccc; /* Add border to the input box */
+        border-radius: 1px; /* Add border radius to the input box */
+        background-color: rgba(255, 255, 255, 0.36); /* Transparent background */
+        border-color: #222;
+    }
+    /*
+    
+    .card-title {
+        font-size: 30px; /* Increased font size */
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+    }
+    
+    .card label{
+        font-size: 30px;
+        font-weight: bold;
+        color: #222;
+    }
+    .card-text {
+        font-size: 20px; /* Increased font size */
+        font-style: italic; /* Added italic style */
+        color: #222; /* Slightly darker text color */
+    }
+    */
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+    
+    .title{
+        color: #333;
+    }
+    .finished-task-border {
+        border: 4px solid #36a; /* Dark green border */
+    }
+    form-label {
+        font-weight: bold;
+        font-size: 30px;
+        display: block;
+        margin-bottom: 10px;
+    }
+   
+    
+</style>
+
+<body>
+
+    <div class="card-container">
+        <div class="card input">
+            <h1 class="card-title">Update Task Progress</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{Form.as_p}}
+                <button type="submit" class="btn btn-primary mt-3">Update Progress</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task Progress</title>
+
+</head>
+<body>
+    <h1>Update Task Progress</h1>
+    <p>Task: {{ task.title }}</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ Form.as_p }}
+        <button type="submit">Update Progress</button>
+    </form>
+</body>
+</html>
+-->

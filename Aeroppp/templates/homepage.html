@@ -1,0 +1,96 @@
+{% extends 'homepage-navbar.html' %}
+
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            background-image: url('/static/images/Airplane_Window_View.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 100px;
+        }
+
+        .feature-box {
+            background-color: rgba(255, 255,255, 0.3);
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        .feature-list {
+            font-size: 18px;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .feature-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <h2 class="feature-title">Features for Managers</h2>
+                    <ul class="feature-list">
+                        <li>Manage maintenance tasks efficiently</li>
+                        <li>Assign tasks to engineers</li>
+                        <li>View task status and progress</li>
+                        <li>Generate reports and analytics</li>
+                        <li>Customize user permissions and roles</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <h2 class="feature-title">Features for Engineers</h2>
+                    <ul class="feature-list">
+                        <li>View assigned maintenance tasks</li>
+                        <li>Update task status and progress</li>
+                        <li>Communicate with managers and team members</li>
+                        <li>Access technical documentation and resources</li>
+                        <li>Receive notifications and alerts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+
+{% endblock %}

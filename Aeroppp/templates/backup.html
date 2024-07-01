@@ -1,0 +1,916 @@
+
+<!--
+<style>
+    .form-layout {
+        background-color: transparent; /* Set background color to transparent */
+    }
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.9); /* Set background color of form controls to semi-transparent white */
+    }
+    /* Add additional styles as needed */
+</style>
+
+<div class="container bg-white shadow-md p-5 form-layout">
+    <h3>Create a New Task</h3>
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br>
+        {{ engineer_task_form|crispy}}
+
+        <!--
+        <h4>Engineers Assigned to You</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Specialization</th>
+                    <th>Experience</th>
+                    <th>Rating</th>
+                    <th>Availability</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for engineer in engineers %}
+                    <tr>
+                        <td>{{ engineer.user.username }}</td>
+                        <td>{{ engineer.specialization }}</td>
+                        <td>{{ engineer.experience }}</td>
+                        <td>{{ engineer.rating }}</td>
+                        <td>
+                            {% if engineer.availability >= 5 %}
+                                <span class="text-danger">Not Available</span>
+                            {% else %}
+                                <span class="text-success">Available ({{ engineer.availability }} tasks)</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if engineer.availability < 5 %}
+                                <input type="checkbox" name="assigned_team" value="{{ engineer.id }}">
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        --><!--
+        <button class="btn btn-secondary btn-md w-50 btn-block p-32" type="submit">Create Task</button>
+        
+    </form>
+</div>
+-->
+
+
+{% load static %}
+
+<!DOCTYPE html>
+
+    <html lang="en">
+
+        <head>
+
+
+            <meta charset="utf-8" />
+
+            <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+
+            <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+            <link rel="stylesheet" type="text/css" href="">
+
+
+        </head>
+        
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                font-size: 20px;
+            }
+            h1 {
+                text-align: center;
+            }
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 0.7em;
+            }
+            table, th, td {
+                border: 1px solid #dddddd;
+                padding: 6px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            td {
+                white-space: nowrap;
+            }
+        </style>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+            <a class="navbar-brand main-heading"> 
+                    
+              &nbsp; AeroMaintenance | Manager
+            
+            </a>
+        
+        
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+        
+            </button>
+        
+        
+              <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+                <ul class="navbar-nav ml-auto">
+    
+    
+                    &nbsp;     &nbsp;     &nbsp; 
+          
+          
+                    <li class="nav-link">
+                
+                      <a class="nav-link" type="button"  href="{% url 'create-task' %}">Create</a>
+          
+                    </li>
+
+                    &nbsp;     &nbsp;     &nbsp; 
+          
+          
+                    <li class="nav-link">
+                
+                      <a class="nav-link" type="button"  href="{% url 'manager-dashboard' %}">Dashboard</a>
+          
+                    </li>
+
+                    
+                
+                </ul>
+        
+                
+                <ul class="navbar-nav ms-auto">
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                  <li class="nav-item">
+        
+                    <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
+        
+                  </li>
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                </ul>
+              
+                
+              </div>
+        
+        
+        </nav>
+
+        
+
+        <body>
+      
+            <br>
+            <br>
+      
+            <div class = "table-container">
+
+                <h2> AeroMaintenance </h2>
+      
+                <br>
+                
+            
+                <!--<a class="btn btn-outline-primary" type="button"  href="{% url 'create-task' %}">Create</a>-->
+
+                <h1> Tasks Defined <h1>
+
+                <p> Manager : {{manager_name}} </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Aircraft</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Action</th>
+                            <th>Update</th>
+                            <th>Remove</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in Tasks %}
+                            <tr>
+                                <td>{{task.title}}</td>
+                                <td>{{task.aircraft}}</td>
+                                <td>{{task.truncated_description}}</td>
+                                <td>{{task.priority}}</td>
+                                <td><a href = "{% url 'view-task-manager' task.id %}"> View Task</a> </td>
+                                <td><a href = "{% url 'update-task' task.id %}"> Update Task</a> </td>
+                                <td><a href = "{% url 'delete-task' task.id %}"> Delete Task </a> </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody> 
+                </table> 
+            
+            </div>
+      
+      
+          </body>
+
+
+
+        
+
+
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+
+        crossorigin="anonymous">
+
+        </script>
+
+
+
+
+    </html>
+
+
+    
+{% load static %}
+
+<!DOCTYPE html>
+
+    <html lang="en">
+
+        <head>
+
+
+            <meta charset="utf-8" />
+
+            <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+
+            <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+            <link rel="stylesheet" type="text/css" href="">
+
+
+        </head>
+        
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                font-size: 20px;
+            }
+            h1 {
+                text-align: center;
+            }
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+                font-size: 0.7em;
+            }
+            table, th, td {
+                border: 1px solid #dddddd;
+                padding: 6px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            td {
+                white-space: nowrap;
+            }
+        </style>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+            <a class="navbar-brand main-heading"> 
+                    
+              &nbsp; AeroMaintenance | Manager
+            
+            </a>
+        
+        
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+        
+            </button>
+        
+            <ul class="navbar-nav ms-auto">
+                
+        
+              <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+
+                <ul class="navbar-nav ml-auto">
+    
+    
+                    &nbsp;     &nbsp;     &nbsp; 
+          
+          
+                    <li class="nav-link">
+                
+                        <a class="nav-link" type="button"  href="{% url 'engineer-dashboard' %}">Dashboard</a>
+            
+                    </li>
+  
+                    &nbsp;     &nbsp;     &nbsp;
+        
+                    <li class="nav-link">
+                
+                      <a class="nav-link" type="button"  href="">Notifications</a>
+          
+                    </li>
+
+                    
+                
+                </ul>
+        
+                
+                <ul class="navbar-nav ms-auto">
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                  <li class="nav-item">
+        
+                    <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
+        
+                  </li>
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                </ul>
+              
+                
+              </div>
+        
+        
+        </nav>
+
+        
+
+        <body>
+      
+            <br>
+            <br>
+      
+            <div class = "table-container">
+
+                <h2> AeroMaintenance </h2>
+      
+                <br>
+                
+            
+                <!--<a class="btn btn-outline-primary" type="button"  href="{% url 'create-task' %}">Create</a>-->
+
+                <h1> Tasks Assigned <h1>
+
+                
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Aircraft</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Manager</th>
+                            <th>View</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task, manager in Tasks %}
+                            <tr>
+                                <td>{{task.title}}</td>
+                                <td>{{task.aircraft}}</td>
+                                <td>{{task.truncated_description}}</td>
+                                <td>{{task.priority}}</td>
+                                <td>{{manager}}</td>
+                                <td><a href = "{% url 'view-task-engineer' task.id %}"> View Task</a> </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody> 
+                </table> 
+            
+            </div>
+      
+      
+          </body>
+
+
+
+        <script src=""></script>
+
+
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+
+        crossorigin="anonymous">
+
+        </script>
+
+
+
+
+    </html>
+
+
+    
+{% load static %}
+
+<!DOCTYPE html>
+
+    <html lang="en">
+
+        <head>
+
+
+            <meta charset="utf-8" />
+
+            <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+
+            <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+            <link rel="stylesheet" type="text/css" href="">
+
+
+        </head>
+
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+
+            <a class="navbar-brand main-heading"> 
+                    
+              &nbsp; AeroMaintenance
+            
+            </a>
+        
+        
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarNavDropdown"
+              aria-controls="navbarNavDropdown"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+        
+            </button>
+        
+        
+              <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+        
+                
+                <ul class="navbar-nav ms-auto">
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+        
+        
+                  <li class="nav-item">
+              
+                    <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'register' %}">Register</a>
+        
+                  </li>
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                  <li class="nav-item">
+        
+                    <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'login' %}">Login</a>
+        
+                  </li>
+        
+        
+                  &nbsp;     &nbsp;     &nbsp; 
+                  
+        
+                </ul>
+              
+                
+              </div>
+        
+        
+        </nav>
+
+        
+
+        <body>
+      
+            <br>
+            <br>
+      
+            <div class="text-center">
+      
+            <h2> EAeroMaintenance... A streamlined way of maintaining Jets. </h2>
+      
+              <br>
+                
+            
+              <a class="btn btn-outline-primary" type="button"  href="{% url 'register' %}">Register</a>
+      
+            
+            </div>
+      
+      
+          </body>
+
+
+
+        <script src=""></script>
+
+
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+
+        crossorigin="anonymous">
+
+        </script>
+
+
+
+
+    </html>
+
+
+
+    {% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+    <head>
+        <title> AeroMaintenance | Login </title>
+        
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+    </head>
+
+    
+
+    <br>
+    <div class = "container bg-white shadow-md p-5 form-layout">
+        <h3> Login to your account </h3>
+
+        <br><br>
+
+
+
+        <br>
+        <form method = "POST" autocomplete = "off">
+            {%csrf_token%}
+
+            {{LoginForm|crispy}}
+
+            <br><br>
+
+            <button class = "btn btn-secondary btn-md w-50 btn-block p-32" type = "submit"> &nbsp; Login to your Account </button>
+
+        </form>
+
+    </div>
+
+  
+
+</html>
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+    <head>
+        <title> AeroMaintenance | Register </title>
+
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/morph/bootstrap.min.css">
+
+
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+        <script type="text/javascript">
+            function toggleFields() {
+                var role = document.getElementById('id_role').value;
+                var experienceField = document.getElementById('div_id_experience');
+                var specializationField = document.getElementById('div_id_specialization');
+                var managerAssignedField = document.getElementById('div_id_managers');
+    
+                if (role === 'manager') {
+                    experienceField.style.display = 'block';
+                    specializationField.style.display = 'block';
+                    managerAssignedField.style.display = 'none';
+                } else if (role === 'engineer') {
+                    experienceField.style.display = 'block';
+                    specializationField.style.display = 'block';
+                    managerAssignedField.style.display = 'block';
+                } else {
+                    experienceField.style.display = 'none';
+                    specializationField.style.display = 'none';
+                    managerAssignedField.style.display = 'none';
+                }
+            }
+            window.onload = toggleFields;
+        </script>
+
+    </head>
+
+    <br>
+
+    <div class = "container bg-white shadow-md p-5 form-layout">
+        <h3> Create your account </h3>
+
+     
+
+        <br><br>
+
+        
+
+        <form method = "POST" autocomplete = "off">
+            {%csrf_token%}
+            
+            {{RegistrationForm|crispy}}
+            <!--
+            <p>
+                <label for="id_username">Username:</label>
+                {{ RegistrationForm.username }}
+            </p>
+            
+            <p>
+                <label for="id_email">Email:</label>
+                {{ RegistrationForm.email }}
+            </p>
+            
+            <p>
+                <label for="id_password1">Password:</label>
+                {{ RegistrationForm.password1 }}
+            </p>
+            
+            <p>
+                <label for="id_password2">Confirm Password:</label>
+                {{ RegistrationForm.password2 }}
+            </p>
+            
+            <p>
+                <label for="id_role">Role:</label>
+                {{ RegistrationForm.role }}
+            </p>
+            
+            <div id="div_id_specialization" style="display:none;">
+                <p>
+                    <label for="id_specialization">Specialization:</label>
+                    {{ RegistrationForm.specialization }}
+                </p>
+            </div>
+            
+            <div id="div_id_experience" style="display:none;">
+                <p>
+                    <label for="id_experience">Experience:</label>
+                    {{ RegistrationForm.experience }}
+                </p>
+            </div>
+            
+            <div id="div_id_manager_assigned" style="display:none;">
+                <p>
+                    <label for="id_manager_assigned">Manager Assigned:</label>
+                    {{ RegistrationForm.manager_assigned }}
+                </p>
+            </div>
+            <br><br>-->
+
+            <button class = "btn btn-secondary btn-md w-50 btn-block p-32" type = "submit"> &nbsp; Create Account </button>
+
+        </form>
+
+    </div>
+    <br>
+    <script type="text/javascript">
+        document.getElementById('id_role').addEventListener('change', toggleFields);
+    </script>
+
+</html>
+
+
+
+
+
+{% extends 'homepage-navbar.html' %}
+
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            background-image: url('/static/images/Airplane_Window_View.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .login-container {
+            margin-top: 100px; /* Adjust the margin-top as needed */
+        }
+        .login-box {
+        
+            max-width: 400px; /* Set maximum width for the login box */
+            margin: 0 auto; /* Center the login box horizontally */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.36); /* Transparent background */
+            border: 1px solid #000; /* Black border */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow for a slight elevation effect */
+        }
+
+        .form-control {
+            background-color: transparent !important;
+            border-color: #333;
+            background-color: rgba(255, 255, 255, 0.9); 
+            /* Semi-transparent white background */
+        }
+    </style>
+    <script>
+        function removeFile() {
+            const fileInput = document.getElementById('id_file');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            fileInput.value = '';  // Clear the selected file
+            fileNameDisplay.textContent = 'No file selected';
+        }
+
+        function updateFileName() {
+            const fileInput = document.getElementById('id_file');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'No file selected';
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container login-container">
+    <div class="login-box">
+        <h2 class="text-center">DOCUMENTS</h2>
+        
+        <h3 class = "text-center"> {{Task.title}} </h3>
+
+        {% if documents %}
+        
+
+            <ul>
+                {% for document in documents %}
+                    <div class="col-md-15">
+                        <li><a href = "{{document.file.url }}">{{ document.file.name }}</a></li>
+                        <label for = "document"> Uploaded: {{Task.created_by.get_full_name}}
+                        <label for = "document"> Time: {{document.uploaded_at}}
+                            
+                        <br>
+                    </div>
+                {% endfor %}
+
+            </ul>
+
+        {% endif %}
+
+        {{Form.as_p}}
+        
+        
+        <button type="submit">Upload</button>
+        
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    
+    <div id="chat-log">
+        {% for message in Messages %}
+            <div>{{ message.sender.username }}: {{ message.message }}</div>
+        {% endfor %}
+    </div>
+    
+    <form method="post" id="message-form">
+        {% csrf_token %}
+        {{ Form.as_p }}
+        <button type="submit" id="send-button">Send</button>
+    </form>
+    
+    <script>
+        // Function to handle form submission using AJAX
+        $('#message-form').submit(function(event) {
+            event.preventDefault();  // Prevent the default form submission
+            
+            $.ajax({
+                url: '{% url "send-message" Task.id %}',
+                method: 'POST',
+                data: $(this).serialize(),  // Serialize the form data
+                success: function(response) {
+                    // Remove the message from the form input field
+                    $('#id_message').val('');
+                },
+                error: function(xhr, status, error) {
+                    // Handle error (if needed)
+                }
+            });
+        });
+    </script>
+</body>
+</html>

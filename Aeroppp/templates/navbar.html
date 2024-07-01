@@ -1,0 +1,161 @@
+{% load static %}
+
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
+
+
+        
+    </head>
+
+  <!--
+    <nav class="navbar navbar-inverse navbar-expand-lg" style = "background-color: #333;">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand">AeroMaintenance</a>
+          </div>
+          <div class="navbar-nav mr-auto">
+              <a class="nav-link" href="/">Virtual Flight Predictions</a>
+          &nbsp; &nbsp;
+          <div class="navbar-nav mr-auto">
+              <a class="nav-link" href="/real2">Real-Time Flights</a>
+          </div>
+      </div>
+    </nav>
+  -->
+    <nav class="navbar navbar-inverse navbar-expand-lg" style = "background-color: #333;">
+
+        <a class="navbar-brand main-heading"> 
+                
+          &nbsp; AeroMaintenance
+        
+        </a>
+    
+        
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+    
+        </button>
+    
+    
+          <div class="collapse navbar-collapse text-center" id="navbarNavDropdown">
+    
+            
+            <ul class="navbar-nav mr-auto">
+    
+    
+              &nbsp;     &nbsp;   
+    
+    
+              <li class="nav-link">
+          
+                <a class="nav-link" type="button"  href="{% url 'manager-dashboard' %}">Dashboard</a>
+    
+              </li>
+    
+    
+              &nbsp;     &nbsp; 
+              
+    
+              <li class="nav-link">
+    
+                <a class="nav-link" type="button"  href="{% url 'create-task' %}">Create Task</a>
+    
+              </li>
+    
+    
+              &nbsp;     &nbsp; 
+
+              <li class="nav-link">
+    
+                <a class="nav-link" type="button"  href="{% url 'get-engineers' %}">Get Engineers</a>
+    
+              </li>
+    
+    
+              &nbsp;     &nbsp;  
+
+              <li class="nav-link">
+    
+                <a class="nav-link" type="button"  href="{% url 'delete-engineers' %}">Remove Engineers</a>
+    
+              </li>
+    
+    
+              &nbsp;     &nbsp; 
+
+              <li class="nav-link">
+    
+                <a class="nav-link" type="button"  href="{% url 'edit-teams' %}">Edit Teams</a>
+    
+              </li>
+    
+    
+              &nbsp;     &nbsp;  
+
+              <li class="nav-link">
+    
+                <a class="nav-link" type="button"  href="{% url 'assign-ratings' %}">Assign Rating</a>
+    
+              </li>
+
+              &nbsp; &nbsp;
+
+              <li class="nav-link">
+          
+                <a class="nav-link" type="button"  href="{% url 'progress-notifications-manager' %}">Progress
+                {% if Notifs > 0 %}
+                  <span class="badge badge-danger">{{ Notifs }}</span>
+                {% endif %}
+                </a>
+    
+              </li>
+    
+    
+              &nbsp; &nbsp; 
+
+              
+            </ul>
+
+            <ul class = "navbar-nav ml-auto">
+
+              <li class="nav-item">
+        
+                <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'profile-management-manager' %}">Profile Management</a>
+    
+              </li>
+
+              &nbsp; &nbsp;
+
+              <li class="nav-item">
+        
+                <a class="btn btn-primary navbar-btn" type="button"  href="{% url 'logout' %}">Logout</a>
+    
+              </li>
+             
+    
+            </ul>
+          
+            
+          </div>
+    
+    
+    </nav>
+    
+
+    {% block content %}
+
+
+    {% endblock %}
+

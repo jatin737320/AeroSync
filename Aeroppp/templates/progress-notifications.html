@@ -1,0 +1,118 @@
+{% extends 'engineer-navbar.html' %}
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AeroMaintenance</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<style>
+    /* Custom CSS */
+    body {
+        background-image: url("{% static '/images/Airplane_Window_View.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+    
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        padding: 20px;
+    }
+    
+    .card {
+        width: calc(90% - 20px); /* Adjusted width */
+        margin-bottom: 20px;
+        background-color: rgba(255, 255, 255, 0.36);
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .card-title {
+        font-size: 30px; /* Increased font size */
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333; /* Dark text color */
+    }
+    
+    .card-text {
+        font-size: 20px; /* Increased font size */
+        font-style: italic; /* Added italic style */
+        color: #222; /* Slightly darker text color */
+    }
+    
+    .btn-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+    }
+    .title{
+        color: #333;
+    }
+    .finished-task-border {
+        border: 4px solid #28a758; /* Dark green border */
+    }
+</style>
+
+<body>
+   
+    <div class="container">
+        <br><br>
+        <h1 class="text-center mb-4 title">Engineer: {{engineer}}</h1>
+        <div class="card-container">
+
+            {% for notification in Notifications %}
+            <div class="card{% if notification.task.progress == 100 %} finished-task-border {% endif %}">
+                <div class = "row justify-content-center">
+                    <h5 class = "card-title">{{notification.task.title}}</h5>
+                </div>
+                <div class = "row justify-content-center">
+                    {% if notification.task.progress == 100 %}
+                        <p class="card-text" style = "color: #209f; font-size: 24px;"><strong>Task Completed</strong></p>
+                    {% endif %}
+                </div>
+                &nbsp;
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>Updated at: {{notification.created_at}}</strong></p>
+                    </div>
+                   
+                    <div class="col-md-4">
+                        <p class="card-text"><strong>New Progress: {{ notification.task.progress }}</strong></p>
+                    </div>
+
+                    <div class="col-md-4">
+                        {% if notification.engineer %}
+
+                            <p class="card-text"><strong>Updated by: {{ notification.engineer.user.get_full_name }}</strong></p>
+
+                        {% elif notification.manager %}
+
+                            <p class="card-text"><strong>Updated by: {{ notification.manager.user.get_full_name }}</strong></p>
+
+                        {% endif %}
+                    </div>
+                
+                </div>
+                
+                
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}
